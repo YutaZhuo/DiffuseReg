@@ -85,64 +85,14 @@ def init_weights(net, init_type='kaiming', scale=1, std=0.02):
 def define_G(opt):
     self_opt = opt['self']
     model_opt = opt['model']
-    from .diffusion_3D import CFG_diffusion, unet, uvit, transmorph, swin_unet, \
-        swin_unetR, swin_unetR_uvit, swin_unetR_cat
+    from .diffusion_3D import CFG_diffusion, swin_unetR
 
     # if 'dual' in self_opt or 'vmdiff' in self_opt:
-    if model_opt["type"] == "unet":
-        print("with unet")
-        model_score = unet.myUNet(
-            in_channel=model_opt['unet']['in_channel'],
-            out_channel=model_opt['unet']['out_channel'],
-            inner_channel=model_opt['unet']['inner_channel'],
-            channel_mults=model_opt['unet']['channel_multiplier'],
-            attn_res=model_opt['unet']['attn_res'],
-            res_blocks=model_opt['unet']['res_blocks'],
-            dropout=model_opt['unet']['dropout'],
-            image_size=model_opt['diffusion']['image_size'],
-            opt=self_opt
-        )
-    elif model_opt["type"] == "uvit":
-        print("with uvit")
-        model_score = uvit.UViT(
-            img_size=model_opt['uvit']['img_size'],
-            in_chans=model_opt['uvit']['in_chans'],
-            out_chans=model_opt['uvit']['out_chans'],
-            patch_size=model_opt['uvit']['patch_size'],
-            embed_dim=model_opt['uvit']['embed_dim'],
-            depth=model_opt['uvit']['depth'],
-            num_heads=model_opt['uvit']['num_heads'],
-            mlp_ratio=model_opt['uvit']['mlp_ratio'],
-            qkv_bias=model_opt['uvit']['qkv_bias'],
-            mlp_time_embed=model_opt['uvit']['mlp_time_embed'],
-            cond=model_opt['uvit']['cond']
-        )
-    elif model_opt["type"] == "transmorph":
-        print("with transmorph")
-        model_score = transmorph.TransMorph(
-            **model_opt['transmorph'],
-        )
-    elif model_opt["type"] == "swin_unet":
-        print("with swin unet")
-        model_score = swin_unet.SwinUnet(
-            **model_opt['swin_unet'],
-        )
-    elif model_opt["type"] == "swin_unetR":
+    if model_opt["type"] == "swin_unetR":
         print("with swin unetR")
         model_score = swin_unetR.SwinUNETR(
             **model_opt['swin_unetR'],
         )
-    elif model_opt["type"] == "swin_unetR_uvit":
-        print("with swin unetR uvit")
-        model_score = swin_unetR_uvit.SwinUNETR(
-            **model_opt['swin_unetR_uvit'],
-        )
-    elif model_opt["type"] == "swin_unetR_cat":
-        print("with swin unetR cat")
-        model_score = swin_unetR_cat.SwinUNETR(
-            **model_opt['swin_unetR_cat'],
-        )
-
     else:
         raise NotImplementedError(model_opt["type"])
 
@@ -175,15 +125,7 @@ def define_G(opt):
     if opt['phase'] == 'train':
         load_path = opt['path']['resume_state']
         if load_path is None:
-            if model_opt["type"] == "unet":
-                init_weights(netG.denoise_fn, init_type='orthogonal')
-            elif model_opt["type"] == "uvit":
-                pass
-            elif model_opt["type"] == "transmorph":
-                pass
-            elif model_opt["type"] == "swin_unet":
-                pass
-            elif model_opt["type"] in ["swin_unetR", "swin_unetR_uvit", "swin_unetR_cat"]:
+            if model_opt["type"] == "swin_unetR":
                 pass
             else:
                 raise NotImplementedError(model_opt["type"])

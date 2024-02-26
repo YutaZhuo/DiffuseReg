@@ -21,7 +21,6 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument('-c', '--config', type=str, default='config/test_3D.json',
                         help='JSON file for configuration')
-    # swin_unetR_aug+1.0sim@adamw[1e-4,1e-4]cosine[1e-6]_train_240128_135907
     parser.add_argument('-w', '--weights', type=str,
                         default='./experiments/swin_unetR_aug+1.0sim+0.1reg@adamw[1e-4,1e-4]cosine[1e-6]_train_240221_154334/checkpoint/I120000_E1200',
                         help='weights file for validation')
@@ -40,7 +39,7 @@ if __name__ == "__main__":
     phase = 'test'
     finesize = opt['model']['diffusion']['image_size']
     dataset_opt = opt['datasets']['test']
-    test_set = Data.create_dataset_ACDC(dataset_opt, finesize, "vis")
+    test_set = Data.create_dataset_ACDC(dataset_opt, finesize, "test50")
     test_loader = Data.create_dataloader(test_set, dataset_opt, phase)
     print('Dataset Initialized')
 

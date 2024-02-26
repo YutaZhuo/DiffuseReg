@@ -1,5 +1,5 @@
 {
-    "name": "VTN_BraTS_t2wM-t1nF_noD_SSIM15",
+    "name": "VTN_ACDC",
     "phase": "train",
     "gpu_ids": [
         0
@@ -13,8 +13,7 @@
         "centered": true,
         "train": {
             "name": "3D",
-            "__dataroot": "../datasets/sliver/training",
-            "dataroot": "../datasets/BraTS_t2wM-t1nF/training",
+            "dataroot": "../datasets/ACDC/database/training",
             "batch_size": 2,
             "num_workers": 2,
             "use_shuffle": true
@@ -25,7 +24,7 @@
         "which_model_G": "ddpm",
         "finetune_norm": false,
         "diffusion": {
-            "image_size": [64,96,96],
+            "image_size": [32,128,128],
             "conditional": true
         },
         "bootstrap": {
@@ -34,6 +33,6 @@
         }
     },
     "train": {
-        "n_epoch": 500
+        "n_epoch": 2000
     }
 }

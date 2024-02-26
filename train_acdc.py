@@ -11,7 +11,6 @@ from math import *
 import time
 from torch.utils import tensorboard
 import numpy as np
-import GPUwaiter
 from model.diffusion_3D.unet import SpatialTransform
 import SimpleITK as sitk
 
@@ -26,8 +25,7 @@ if __name__ == "__main__":
     parser.add_argument('-gpu', '--gpu_ids', type=str, default="1")
     # parse configs
     args = parser.parse_args()
-    if args.gpu_ids == "wait":
-        args.gpu_ids = GPUwaiter.waiter()
+
 
     opt = Logger.parse(args)
     # Convert to NoneDict, which return None for missing key.

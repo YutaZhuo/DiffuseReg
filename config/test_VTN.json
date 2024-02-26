@@ -12,8 +12,7 @@
         "centered": true,
         "test": {
             "name": "3D",
-            "__dataroot": "../datasets/sliver/testing",
-            "dataroot": "../datasets/BraTS_t2wM-t1nF/testing",
+            "dataroot": "../datasets/ACDC/database/testing",
             "data_len": 3
         }
     },
@@ -34,7 +33,7 @@
             }
         },
         "diffusion": {
-            "image_size": [64,96,96],
+            "image_size": [32,128,128],
             "flow_mean": [0.0014,-0.0758,-0.1493],
             "flow_std": [0.4636,1.1375,1.2221],
             "conditional": true

@@ -27,7 +27,7 @@ def main(args):
     finesize = opt['model']['diffusion']['image_size']
     dataset_opt = opt['datasets']['train']
     batchSize = opt['datasets']['train']['batch_size']
-    train_set = Data.create_dataset_Brats(dataset_opt, finesize, phase)
+    train_set = Data.create_dataset_ACDC(dataset_opt, finesize, phase)
     train_loader = Data.create_dataloader(train_set, dataset_opt, phase)
     training_iters = int(ceil(train_set.data_len / float(batchSize)))
     print('Dataset Initialized')

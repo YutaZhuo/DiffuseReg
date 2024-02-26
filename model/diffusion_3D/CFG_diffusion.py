@@ -245,7 +245,7 @@ class GaussianDiffusion(nn.Module):
         return warpped, flow, warpped, x_starts
 
     @torch.no_grad()
-    def p_sample(self, x, t, clip_denoised=True, repeat_noise=False, condition_x=None):
+    def p_sample(self, x, t, clip_denoised=False, repeat_noise=False, condition_x=None):
         b, *_, device = *x.shape, x.device
         batched_times = torch.full((b,), t, device=device, dtype=torch.long)
         model_mean, _, model_log_variance, x_start = self.p_mean_variance(
@@ -255,79 +255,13 @@ class GaussianDiffusion(nn.Module):
         return pred_noise, x_start
 
     @torch.no_grad()
-    def ddim_sample_loop(self, x_in):
-        """
-        params x_in: the condition [M, F]
-        """
-        device = self.betas.device
-        b, _, h, w, d = x_in.shape
-        # max_size = torch.tensor(self.scaler, device=device).view(1, 3, 1, 1, 1)
-        flow_mean = torch.tensor(self.mean, device=device).view(1, 3, 1, 1, 1)
-        flow_std = torch.tensor(self.std, device=device).view(1, 3, 1, 1, 1)
-        noise = torch.randn([b, 3, h, w, d], device=device)
-        noises = [noise]
-        for t in tqdm(reversed(range(0, self.num_timesteps, 1)), desc='sampling loop time step',
-                      total=self.num_timesteps,
-                      ascii=" >"):
-            noise, x_start = self.ddim_sample(noise, t, condition_x=x_in, eta=0.0)
-            # noises.append(noise)
-        # the noise referring to flow needs to be un-normalized
-        flow = noise * flow_std + flow_mean  # \in (-ms, ms)
-        # flow = noise
-        warpped = self.stn(x_in[:, :1], flow)  # x_in[:, :1] the moving img
-        return warpped, flow, warpped, flow
-
-    @torch.no_grad()
-    def ddim_sample(self, x, t, clip_denoised=True, repeat_noise=False, condition_x=None, eta=0.0):
-        """
-        clip_denoised() leads to difference
-        between the scores from p_mean_variance() directly and from predict_noise_from_start()
-        """
-        b, *_, device = *x.shape, x.device
-        batched_times = torch.full((b,), t, device=device, dtype=torch.long)
-        model_mean, _, model_log_variance, x_start = self.p_mean_variance(
-            x=x, t=batched_times, clip_denoised=False, condition_x=condition_x)
-
-        score = self.predict_noise_from_start(x, batched_times, x_start)
-        alpha_bar = extract(self.alphas_cumprod, batched_times, x.shape)
-        alpha_bar_prev = extract(self.alphas_cumprod_prev, batched_times, x.shape)
-        sigma = (
-                eta
-                * torch.sqrt((1 - alpha_bar_prev) / (1 - alpha_bar))
-                * torch.sqrt(1 - alpha_bar / alpha_bar_prev)
-        )
-        noise = noise_like(x.shape, device, repeat_noise) if t > 0 else 0.
-        model_mean = (
-                x_start * torch.sqrt(alpha_bar_prev)
-                + torch.sqrt(1 - alpha_bar_prev - sigma ** 2) * score
-        )
-        pred_noise = model_mean + sigma * noise
-        return pred_noise, x_start
-
-    @torch.no_grad()
     def registration(self, x_in):
         img_mean = x_in.mean()
         img_std = x_in.std()
         x_in = (x_in - img_mean) / img_std
 
-        print("Sample mode: DDPM")
         return self.p_sample_loop(x_in)
-        # print("Sample mode: DDIM")
-        # return self.ddim_sample_loop(x_in)
 
-        # print("Sample mode: DDPM AVG")
-        # times = 5
-        # _, _, h, w, d = x_in.shape
-        # device = self.betas.device
-        # mean_warpped = torch.zeros(times, 1, h, w, d, device=device)
-        # mean_flow = torch.zeros(times, 3, h, w, d,  device=device)
-        # for i in range(times):
-        #     warpped, flow, _, _ = self.p_sample_loop(x_in)
-        #     mean_flow[i] = flow
-        #     mean_warpped[i] = warpped
-        # mean_warpped = torch.mean(mean_warpped, dim=0).unsqueeze(0)
-        # mean_flow = torch.mean(mean_flow, dim=0).unsqueeze(0)
-        # return mean_warpped, mean_flow, mean_warpped, mean_flow
 
     def q_sample(self, x_start, t, noise=None):
         noise = default(noise, lambda: torch.randn_like(x_start))

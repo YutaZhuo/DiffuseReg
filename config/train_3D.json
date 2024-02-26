@@ -7,7 +7,6 @@
     "path": {
         "checkpoint": "checkpoint",
         "resume_state": null,
-        "__resume_state": "./experiments/swin_unetR_aug@adamw[1e-4,1e-4]_train_240118_200632/checkpoint/I100000_E1000",
         "tb_logger": "logger"
     },
     "datasets": {
@@ -26,116 +25,9 @@
         "which_model_G": "ddpm",
         "finetune_norm": false,
         "type": "swin_unetR",
-        "unet": {
-            "in_channel": 5,
-            "out_channel": 3,
-            "inner_channel": 104,
-            "channel_multiplier": [
-                1,
-                2,
-                4,
-                8
-            ],
-            "attn_res": [
-                "None", "None", "None", "None"
-            ],
-            "res_blocks": 2,
-            "dropout": 0
-        },
-        "uvit": {
-            "img_size": [32, 128, 128],
-            "in_chans": 3,
-            "out_chans": 3,
-            "patch_size": 4,
-            "embed_dim": 256,
-            "depth": 12,
-            "num_heads": 8,
-            "mlp_ratio": 4,
-            "qkv_bias": false,
-            "mlp_time_embed": false,
-            "cond": true
-        },
-        "transmorph": {
-            "if_transskip": true,
-            "if_convskip": true,
-            "patch_size": 4,
-            "in_chans": 3,
-            "embed_dim": 240,
-            "depths": [2, 2, 4, 2],
-            "__depths": [2, 2, 6],
-            "num_heads": [4, 4, 8, 8],
-            "__num_heads": [4, 4, 8],
-            "window_size": [2, 4, 4],
-            "mlp_ratio": 4,
-            "pat_merg_rf": 4,
-            "qkv_bias": false,
-            "drop_rate": 0,
-            "drop_path_rate": 0.3,
-            "ape": false,
-            "spe": false,
-            "rpe": true,
-            "patch_norm": true,
-            "use_checkpoint": false,
-            "out_indices": [0, 1, 2, 3],
-            "__out_indices": [0, 1, 2],
-            "reg_head_chan": 16,
-            "img_size": [32, 128, 128],
-            "uvit_params": {
-                "depth": 4,
-                "num_heads": 4
-            }
-        },
-        "swin_unet": {
-            "patch_size": 2,
-            "in_chans": 3,
-            "embed_dim": 224,
-            "channel_mults": [1, 2, 4, 8],
-            "depths": [2, 2, 6, 2],
-            "num_heads": [4, 8, 16, 32],
-            "window_size": [2, 4, 4],
-            "mlp_ratio": 4,
-            "pat_merg_rf": 4,
-            "qkv_bias": false,
-            "drop_rate": 0,
-            "drop_path_rate": 0.1,
-            "ape": false,
-            "rpe": true,
-            "patch_norm": true,
-            "use_checkpoint": false,
-            "img_size": [32, 128, 128],
-            "uvit_params": {
-                "depth": 4,
-                "num_heads": 4
-            }
-        },
         "swin_unetR": {
             "img_size": [32, 128, 128],
             "in_channels": 3,
-            "out_channels": 3,
-            "depths": [2, 2, 2, 2],
-            "num_heads": [3, 6, 12, 24],
-            "window_size": [2, 4, 4],
-            "feature_size": 120,
-            "spatial_dims": 3,
-            "downsample": "merging",
-            "use_v2": false
-        },
-        "swin_unetR_uvit": {
-            "img_size": [32, 128, 128],
-            "in_channels": 3,
-            "out_channels": 3,
-            "depths": [2, 2, 2, 2],
-            "num_heads": [3, 6, 12, 24],
-            "window_size": [2, 4, 4],
-            "feature_size": 120,
-            "spatial_dims": 3,
-            "downsample": "merging",
-            "use_v2": false,
-            "uvit_depth": 2
-        },
-        "swin_unetR_cat": {
-            "img_size": [32, 128, 128],
-            "in_channels": 5,
             "out_channels": 3,
             "depths": [2, 2, 2, 2],
             "num_heads": [3, 6, 12, 24],
@@ -160,19 +52,10 @@
         },
         "diffusion": {
             "image_size": [32,128,128],
-            "__image_size": [128,128,128],
-            "flow_scaler": [20.0,20.0,20.0],
             "flow_mean": [0.0014,-0.0758,-0.1493],
             "flow_std": [0.4636,1.1375,1.2221],
             "conditional": true
-        },
-        "__field": {
-            "in_channel": 2,
-            "encoder_nc": [16,32,32,32,32],
-            "decoder_nc": [32,32,32,8,8,3]
-        },
-        "loss_lambda": 20,
-        "gamma": 1
+        }
     },
     "train": {
         "n_epoch": 1200,

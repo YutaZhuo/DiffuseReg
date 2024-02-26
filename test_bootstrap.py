@@ -29,8 +29,7 @@ def main(args):
     phase = 'test'
     finesize = opt['model']['diffusion']['image_size']
     dataset_opt = opt['datasets']['test']
-    # test_set = Data.create_dataset_Liver(dataset_opt, finesize, phase)
-    test_set = Data.create_dataset_Brats(dataset_opt, finesize, "test")
+    test_set = Data.create_dataset_ACDC(dataset_opt, finesize, "test50")
     test_loader = Data.create_dataloader(test_set, dataset_opt, phase)
     print('Dataset Initialized')
 
@@ -160,7 +159,7 @@ if __name__ == '__main__':
     parser.add_argument('-c', '--config', type=str,
                         default='config/test_VTN.json')
     parser.add_argument('-w', '--weights', type=str,
-                        default="./experiments/VTN_BraTS_t2wM-t1nF_noD_SSIM15_train_240223_195954/checkpoint/E500.pth")
+                        default="./experiments/.../checkpoint/E2000.pth")
     args = parser.parse_args()
 
     main(args)

@@ -28,23 +28,3 @@ def create_dataset_ACDC(dataset_opt, finesize, phase):
                 split=phase,
                 )
     return dataset
-
-
-def create_dataset_Liver(dataset_opt, finesize, phase):
-    '''create dataset'''
-    from data.Liver_dataset import LiverDataset as D
-    dataset = D(dataroot=dataset_opt['dataroot'],
-                fineSize=finesize,
-                split=phase,
-                )
-    return dataset
-
-
-def create_dataset_Brats(dataset_opt, finesize, phase):
-    '''create dataset'''
-    from data.Brats_dataset import BratsDataset as D
-    dataset = D(dataroot=dataset_opt['dataroot'],
-                fineSize=finesize,
-                split=phase,
-                )
-    return dataset
