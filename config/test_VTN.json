@@ -1,0 +1,46 @@
+{
+    "name": "VTN",
+    "phase": "test",
+    "gpu_ids": [
+        0
+    ],
+    "path": {
+        "checkpoint": "checkpoint",
+        "resume_state": null
+    },
+    "datasets": {
+        "centered": true,
+        "test": {
+            "name": "3D",
+            "__dataroot": "../datasets/sliver/testing",
+            "dataroot": "../datasets/BraTS_t2wM-t1nF/testing",
+            "data_len": 3
+        }
+    },
+    "model": {
+        "netDim": 3,
+        "which_model_G": "ddpm",
+        "finetune_norm": false,
+        "bootstrap": {
+            "n_cas": 3,
+            "module": "VTNlowRes"
+        },
+        "beta_schedule": {
+            "train": {
+                "schedule": "linear",
+                "n_timestep": 2000,
+                "linear_start": 1e-6,
+                "linear_end": 1e-2
+            }
+        },
+        "diffusion": {
+            "image_size": [64,96,96],
+            "flow_mean": [0.0014,-0.0758,-0.1493],
+            "flow_std": [0.4636,1.1375,1.2221],
+            "conditional": true
+        }
+    },
+    "test": {
+        "amp": false
+    }
+}
