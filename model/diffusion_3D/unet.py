@@ -538,8 +538,7 @@ class VTNAffineStemlowRes(nn.Module):
         self.conv4 = convolveLeakyReLU(4 * channels, 8 * channels, 3, 2)
         self.conv4_1 = convolveLeakyReLU(8 * channels, 8 * channels, 3, 1)
 
-        # ks = (2, 8, 8)  # ks is set depending on the output of conv6_1
-        ks = (4, 6, 6)
+        ks = (2, 8, 8)  # ks is set depending on the output of conv6_1
         self.conv7_W = nn.Conv3d(8 * channels, 9, ks, 1, bias=False)
         self.conv7_b = nn.Conv3d(8 * channels, 3, ks, 1, bias=False)
 
